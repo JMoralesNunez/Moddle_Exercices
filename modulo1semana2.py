@@ -7,12 +7,13 @@ while menu:
     print("2. Calculate average on list.")
     print("3. Count grades above a value.")
     print("4. Verify the average of a grades list.")
-    print("5. Exit")
+    print("5. Add more grades to the list.")
+    print("6. Exit")
     print("===============================================")
     print("===============================================")
     while True:       #Bucle while para asegurarse de recibir la opción correcta
-        option = input("Select an option 1/2/3/4/5: ")
-        if option.isdigit() and int(option) >= 1 and int(option) <= 5:
+        option = input("Select an option 1/2/3/4/5/6: ")
+        if option.isdigit() and int(option) >= 1 and int(option) <= 6:
             break
         else:
             print("Please enter a valid option")
@@ -96,7 +97,29 @@ while menu:
             print(f"The grade: {count} has appeared a total of {counter2} times.")
         else:
             print("The grade cannot be found in the list")
-    if option == "5":
+    if option == "5":  #Agregué esta función para que el usuario agregara más notas a la lista creada con la opción 2, en caso de requerirlo
+            print(f"The current grades are: {grades}")
+            while True:  #Bucle de validación de notas, es el mismo de la opción 2 básicamente
+                grades_input = input("Enter the grade(s) you would like to add, separated with commas: ")
+                grades_input = grades_input.replace(" ", "")
+                add_grades = grades_input.split(",")
+                valid = True
+                for grade in add_grades:
+                    if not grade.isdigit() or not (0 <= int(grade) <= 100):
+                        print(f"'{grade}' is not a valid grade. Please enter numbers between 0 and 100.")
+                        valid = False
+                        break
+                if valid:
+                    break
+            converter = []  
+            for item in add_grades:   
+                item = int(item)
+                converterList.append(item)
+            add_grades = converter
+            grades += add_grades  #Con esto se agregan las notas añadidas en esta opción, a la lista general de notas
+            print("grade(s) have been successfully added:")
+            print(f"The new grades list is {grades}")
+    if option == "6":
         print("See you later!")
         menu = False
     
