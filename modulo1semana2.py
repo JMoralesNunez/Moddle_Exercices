@@ -35,6 +35,7 @@ while menu:
             print("===============================================")
             print("Enter a valid item")
     if option == "2":
+        print("The grades list have been reset")
         while True: #Bucle para validar que los datos ingresados por el usuario sean enteros y dentro del rango requerido
             grades_input = input("Enter the grades you would like to calculate, separated with commas: ")
             grades_input = grades_input.replace(" ", "")
