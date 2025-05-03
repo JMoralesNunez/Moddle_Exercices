@@ -95,7 +95,7 @@ while menu:
         if counter2 > 0:
             print(f"The grade: {count} has appeared a total of {counter2} times.")
         else:
-            print("La nota no se encuentra en la lista")
+            print("The grade cannot be found in the list")
     if option == "5":
         print("See you later!")
         menu = False
