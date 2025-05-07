@@ -42,8 +42,15 @@ while Menu:
                 else:
                     print("Please enter a valid quantity")
             add(name, price, quantity)
-            reset = input("Would you like to add another product? 1.Yes/2.No: ")
-            if reset.isdigit() and int(reset) == 2:
+            while True:
+                reset = input("Would you like to add another product? 1.Yes/2.No: ")
+                if reset.isdigit()==False:
+                    print("Please enter a valid option(1/2)")
+                elif int(reset) != 1 and int(reset) != 2:
+                    print("Please enter a valid option(1/2)")
+                else:
+                    break
+            if int(reset) == 2:
                 break
     if option == "2":
         show()
