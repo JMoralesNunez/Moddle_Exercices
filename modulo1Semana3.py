@@ -1,40 +1,58 @@
 Menu=True
 inventory = {}
-def add(name,price,quantity):
-    info = {"price":int(price), "quantity":int(quantity)}
-    inventory[name]=info
+def add(name,price,quantity):  #Función para agregar los productos al inventario, de forma que el nombre del producto sea la clave, y el precio y cantidad sean el valor como diccionario
+    info = {"price":float(price), "quantity":int(quantity)}
+    inventory[name.capitalize()]=info
     print(f"{name} has been successfully added!")
-def show():
+def show(): #Función para mostrar los elementos del inventario
     for product,info in inventory.items():
-        print(f"{product}.................. price: {info['price']} Quantity: {info['quantity']}")
-def update(name, newprice):
+        print(f"{product}.................. Price: ${info['price']} | Quantity: {info['quantity']}")
+def search_item(name): #Función para buscar un producto por su nombre
+    format=inventory.get(name)
+    if format == None:  
+        print("Item not found")
+    else:
+        print(f"Name: {name}, Price: {format["price"]}, Quantity: {format["quantity"]}")
+def update(name, newprice): #función para actualizar el precio de un producto
     inventory[name]["price"] = newprice
+def delete(name):
+    inventory.pop(name)
+    print(f"{name} has been successfully deleted")
 
 while Menu:
     print("="*50)
     print("Welcome to your inventory!")
     print("1. Add products")
     print("2. See products")
-    print("3. Update prices")
-    print("4. Delete products")
-    print("5. Check total value of inventory")
-    print("6. Exit")
+    print("3. Search for a product")
+    print("4. Update prices")
+    print("5. Delete products")
+    print("6. Check total value of inventory")
+    print("7. Exit")
     print("="*50)
-    option = input("Selecciona una opción: 1/2/3/4/5/6: ")
+    while True:
+        option = input("Select an option: 1/2/3/4/5/6/7: ")
+        if option.isdigit() and int(option) >= 1 and int(option) <=7:
+            break
+        else:
+            print("Enter a valid option")
     if option == "1":
         while True:
             while True:
                 name = input("Enter the name of the product: ")
-                if name.isalpha():
+                if name.isalpha() and name not in inventory.keys():
                     break
                 else:
-                    print("Please enter a valid name")
+                    print("The item name is not valid or the item is already on the inventory")
             while True:
-                price = input("Enter the price of the product: ")
-                if price.isdigit() and int(price) > 0:
-                    break
-                else:
-                    print("Please enter a valid price")
+                try:
+                    price = float(input("Enter the price of the product: "))
+                    if price >= 0.0:
+                        break
+                    else:
+                        print("Invalid price, try again")
+                except:
+                    print("Enter a valid price")
             while True:
                 quantity = input("Enter the quantity of the product: ")
                 if quantity.isdigit() and int(quantity) > 0:
@@ -53,19 +71,54 @@ while Menu:
             if int(reset) == 2:
                 break
     if option == "2":
+        if not inventory:
+            print("No items in inventory yet")
         show()
     if option == "3":
         while True:
-            name = input("Enter the name of the product you would like to change its price: ")
-            if name.isalpha() and name in inventory.keys():
+            name_search = input("Enter the name of the product you are searching: ")
+            if name_search.isalpha():
+                name_search=name_search.capitalize()
                 break
             else:
                 print("Please enter a valid name")
+        search_item(name_search)
+    if option == "4":
         while True:
-            newprice = input("Enter the new price of the product: ")
-            if newprice.isdigit() and int(newprice) > 0:
+            name_price = input("Enter the name of the product you would like to change its price: ")
+            if name_price.isalpha() and name_price.capitalize() in inventory.keys():
+                name_price=name_price.capitalize()
                 break
             else:
-                print("Please enter a valid price")
-        update(name,newprice)
+                print("Please enter a valid name or the name of an item inside the inventory")
+        while True:
+            try:
+                newprice = float(input("Enter the new price of the product: "))
+                if newprice >= 0.0:
+                    break
+                else:
+                    print("Invalid price, try again")
+            except:
+                print("Enter a valid price")
+        update(name_price,newprice)
         print(f"The price of {name} has been updated")
+    if option == "5":
+        while True:
+            name_deletion = input("Enter the name of the product you would like delete: ")
+            if name_deletion.isalpha() and name_deletion.capitalize() in inventory.keys():
+                name_deletion=name_deletion.capitalize()
+                break
+            else:
+                print("Please enter a valid item")
+        delete(name_deletion)
+    if option == "6":
+        total_prices = dict(map(lambda item: (item[0], item[1]["price"] * item[1]["quantity"]), inventory.items()))
+        for item,price in total_prices.items():
+            print(f"{item}................... Total price: ${price}")
+        total=0
+        for value in total_prices.values():
+            total += value
+        print(f"The total price of all products in the inventory is: ${total}")
+    if option == "7":
+        print("Thanks for coming!")
+        Menu=False
